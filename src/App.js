@@ -1,58 +1,70 @@
-import { AragonApp, Button, AppBar, SidePanel, Text, Card, CircleGraph} from 'aragon-ui/index.cjs'
-import React from 'react'
-import styled from "styled-components"
+import React from "react";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-const Row = styled.div`
-  display: flex;
-  justify-content: flex-start;
-`
+const BasicExample = () => (
+  <Router>
+    <div>
+      <ul>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Link to="/about">About</Link>
+        </li>
+        <li>
+          <Link to="/topics">Topics</Link>
+        </li>
+      </ul>
 
-const CardContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-`
+      <hr />
 
-const LoginButton = () => (<Button mode="strong">Login</Button>)
+      <Route exact path="/" component={Home} />
+      <Route path="/about" component={About} />
+      <Route path="/topics" component={Topics} />
+    </div>
+  </Router>
+);
 
-const Portfolio = ({percentage, name}) => (
-  <div style={{padding: "5px"}}>
-    <Card width="150px" height="200px" style={{padding: "10px"}}>
-      <CardContent>
-        <CircleGraph value={percentage} />
-        <Text style={{margin: "5px"}}>{name}</Text>
-        <Button mode="strong" style={{width: "110px"}}>View</Button>
-      </CardContent>
-    </Card>
+const Home = () => (
+  <div>
+    <h2>Home</h2>
   </div>
+);
 
-)
+const About = () => (
+  <div>
+    <h2>About</h2>
+  </div>
+);
 
+const Topics = ({ match }) => (
+  <div>
+    <h2>Topics</h2>
+    <ul>
+      <li>
+        <Link to={`${match.url}/rendering`}>Rendering with React</Link>
+      </li>
+      <li>
+        <Link to={`${match.url}/components`}>Components</Link>
+      </li>
+      <li>
+        <Link to={`${match.url}/props-v-state`}>Props v. State</Link>
+      </li>
+    </ul>
 
+    <Route path={`${match.url}/:topicId`} component={Topic} />
+    <Route
+      exact
+      path={match.url}
+      render={() => <h3>Please select a topic.</h3>}
+    />
+  </div>
+);
 
-const App = () => (
-  <AragonApp publicUrl="/public">
-    <AppBar title="Stoken" endContent={<LoginButton></LoginButton>}></AppBar>
-    <SidePanel title="Stoker" opened={false}>
-      <Button mode="positiv">Trade Stock</Button>
-    </SidePanel>
-    
-  <Text size="xlarge" color="tomato">Portofolio</Text>
-  <Row>
-    <Portfolio name={"Thermondo"} percentage={1/10}></Portfolio>
-    <Portfolio name={"SpaceX"} percentage={1/5}></Portfolio>
-    <Portfolio name={"Tesla"} percentage={1/30}></Portfolio>
-    <Portfolio name={"EBike"} percentage={1/34}></Portfolio>
-    <Portfolio name={"Paypal"} percentage={1/530}></Portfolio>
-    
-  </Row>
+const Topic = ({ match }) => (
+  <div>
+    <h3>{match.params.topicId}</h3>
+  </div>
+);
 
-
-  </AragonApp>
-)
-
-
-export default App
+export default BasicExample;
