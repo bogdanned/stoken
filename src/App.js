@@ -34,7 +34,7 @@ const Portfolio = ({percentage, name}) => (
 
 
 const App = () => (
-  <AragonApp publicUrl="/">
+  <AragonApp publicUrl="/public">
     <AppBar title="Stoken" endContent={<LoginButton></LoginButton>}></AppBar>
     <SidePanel title="Stoker" opened={false}>
       <Button mode="positiv">Trade Stock</Button>
